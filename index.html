@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id = "HW">hello world</h1>
+    <h1 id = "HW">hello world</h1>
+    <h1 class = "HW1">hello world</h1>
+    <h1 class = "HW1">hello world</h1>
+    <h1 class="selector">GeeksForGeeks</h1>
+    <h2 class="selector">DOM selector in JavaScript</h2>
+     <p>Thanks for visiting GFG</p>   
+    <p>This is showing how to select DOM element using tag name</p>
+    <script>
+        let element = document.getElementById("HW");
+        let element1 = document.getElementsByClassName("selector");
+        let element2 = document.getElementsByTagName('p');
+        let element4 = document.querySelector("h1");
+        let element5 = document.querySelectorAll("#HW1")
+        element.style.fontSize = "100px"
+        element.style.color = "purple"
+        element.style.color = "red"
+        element.style.textAlign = "center"
+        element.style.margin = "2px"
+        element.style.fontSize = "20px"
+        element1.style.marginTop = "20px"
+    </script>
+
+</body>
+</html>
