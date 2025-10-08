@@ -120,3 +120,33 @@ getItem(key) → retrieve data
 removeItem(key) → remove specific key
 clear() → remove all data
 
+
+event----------------------------------------------------------------------------------------------------
+Three phases: Capturing → Target → Bubbling
+Default event flow: Bubbling
+Capturing is less used, but sometimes needed for priority handling
+stopPropagation() prevents event from reaching other elements
+Event delegation often uses bubbling to handle events efficiently on many child elements
+
+
+
+Summary of Best Practices-------------------------------------------------------------------------------
+
+Meaningful names & consistent formatting
+
+Use ES6+ features
+
+Avoid globals & memory leaks
+
+Optimize loops & DOM access
+
+Debounce/throttle high-frequency events
+
+Async/await for asynchronous operations
+
+Use proper data structures
+
+Minify & bundle for production
+
+<!-- do some change  -->
+
