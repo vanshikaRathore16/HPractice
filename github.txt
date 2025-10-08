@@ -1,0 +1,9 @@
+how to remove confug user 
+
+git config --global --unset user.name
+git config --global --unset user.email
+
+to check
+git config --list
+
+if i try to switch another branch without commit chnage so stash.
