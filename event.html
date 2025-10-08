@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <button><h1 id = "btn">click me</h1></button> 
+   <button id="btn1">click here</button>
+   <h1 id="h1"></h1>
+    <script>
+
+        let timeoutt = setTimeout(()=>{
+            console.log("set timeout run")
+        },2000)
+        clearTimeout(timeoutt);
+        let setInternall = setInterval(()=>{
+            console.log("set time run")
+        },2000)
+        clearInterval(setInternall);
+        let myEvent = new CustomEvent("greet");
+        let element = document.getElementById("btn");
+        let element2 = document.getElementById("btn1");
+        let element3 = document.getElementById("h1");
+
+        element2.addEventListener("keypress",()=>{
+            element3.innerText = "hello how are you"
+        })
+
+
+        element.addEventListener("greet",()=>{
+            alert("yes im working fine")
+        })
+        element.addEventListener("click",()=>{
+              element.dispatchEvent(myEvent);
+        })
+        const add = function(a,b){
+         console.log(a+b);
+        }
+        const add2 = (a,b)=> a + b;
+    </script>
+</body>
+</html>
+<!-- Mouse Events 🖱️
+
+Events triggered by user actions with the mouse.
+
+Event	Description	Example
+click	Triggered when an element is clicked	button.addEventListener("click", fn)
+dblclick	Double click on element	button.addEventListener("dblclick", fn)
+mouseover	Mouse moves over element	div.addEventListener("mouseover", fn)
+mouseout	Mouse moves out of element	div.addEventListener("mouseout", fn)
+mousedown	Mouse button pressed	div.addEventListener("mousedown", fn)
+mouseup	Mouse button released	div.addEventListener("mouseup", fn)
+mousemove	Mouse moves inside element	document.addEventListener("mousemove", fn)
+2️⃣ Keyboard Events ⌨️
+
+Events triggered by keyboard actions.
+
+Event	Description	Example
+keydown	Key is pressed	document.addEventListener("keydown", fn)
+keyup	Key is released	document.addEventListener("keyup", fn)
+keypress	Key is pressed and held (deprecated in modern browsers)	input.addEventListener("keypress", fn)
+3️⃣ Form/Input Events 📝
+
+Events related to forms or input fields.
+
+Event	Description	Example
+submit	Form is submitted	form.addEventListener("submit", fn)
+change	Input value changes and loses focus	input.addEventListener("change", fn)
+input	Input value changes immediately	input.addEventListener("input", fn)
+focus	Element gets focus	input.addEventListener("focus", fn)
+blur	Element loses focus	input.addEventListener("blur", fn) -->
+
+
+<!-- Form/Input Events 📝
+
+Events related to forms or input fields.
+
+Event	Description	Example
+submit	Form is submitted	form.addEventListener("submit", fn)
+change	Input value changes and loses focus	input.addEventListener("change", fn)
+input	Input value changes immediately	input.addEventListener("input", fn)
+focus	Element gets focus	input.addEventListener("focus", fn)
+blur	Element loses focus	input.addEventListener("blur", fn) -->
+
+<!-- Debugging in JavaScript -->
+ 1.Using console.log()
+ 2.Using debugger keyword
+ how debugger work-------
+ Open your browser and press F12 → Sources tab.
+Click the “Click to Debug” button.
+The code pauses at debugger.
+Hover over x and y → see their values.
+Use buttons:
+▶️ Resume → continue execution
+⏭ Step over → go line by line
+⏮ Step into → go inside a function (if any)
+Check console tab → see sum and product printed.
+
+Arrays: typeof [] is "object", use Array.isArray([]) to check if it’s really an array.
+
+// Error Handling?------------------------------------------------------------------------------------
+JavaScript provides try, catch, finally, and throw for error handling.
+
+How catch knows the type of error
+When an error occurs in the try block, JavaScript creates an “Error object” automatically.
+This object contains all the info about the error:
+name → the type of error (ReferenceError, TypeError, RangeError, etc.)
+message → description of the error
+stack → stack trace
+The catch block receives this error object as a parameter.
+
+LocalStorage and SessionStorage--------------------------------------------------------------------------
+Common Methods
+Both LocalStorage and SessionStorage have the same methods:
+setItem(key, value) → store data
+getItem(key) → retrieve data
+removeItem(key) → remove specific key
+clear() → remove all data
+
