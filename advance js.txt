@@ -1,0 +1,58 @@
+Summary Table
+Action	Command
+Create branch	git branch new_branch
+Switch branch	git checkout branch_name
+Create & switch	git checkout -b branch_name
+Delete branch	git branch -d branch_name
+Force delete	git branch -D branch_name
+List branches	git branch
+List all (local + remote)	git branch -a
+Push new branch	git push -u origin branch_name
+Merge branch	git merge branch_name
+Delete remote	git push origin --delete branch_name
+git push origin -u new_branch_name     # Push new branch and set upstream
+git push origin --delete old_branch_name   # Delete old branch from GitHub
+
+
+
+
+stash
+when we add and switch to another file it easily switch but if we commit and change in file then switch so it give add into the stash
+Summary Table
+Action	Command
+Save changes	git stash
+Save with message	git stash push -m "msg"
+Include untracked files	git stash -u
+Include ignored files	git stash -a
+View list	git stash list
+Show changes	git stash show -p
+Apply (keep stash)	git stash apply
+Pop (apply + remove)	git stash pop
+Drop specific stash	git stash drop stash@{0}
+Clear all	git stash clear
+Create branch from stash	git stash branch newBranch stash@{0}
+
+
+
+commite
+change commite msg
+git commite -m ""
+git commit --amend -m ""
+git push origin main --force
+
+remove commit 
+git reset --soft HEAD~1
+git push origin practice5
+vo vs code me vapas ajeyega
+
+
+add---------
+remove from stage
+git reset ""
+git show <commit_hash>  # Show details of a commit
+
+git reset <file>                # Unstage file but keep changes
+git reset                        # Unstage all files
+git restore <file>               # Undo local changes
+git restore --staged <file>      # Unstage file but keep edits
+git checkout <file>              # Older way to undo changes (less recommended)

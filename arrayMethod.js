@@ -55,3 +55,7 @@ class Person{
 
 let obj4 = new Person("vanshika",24)
 Object.assign(obj4,{name : "atul", age : 20,city : "harda"})
+
+// Direct Comparison (== or ===)
+//Shallow Comparison (Compare Keys & Values)
+//Using JSON.stringify() (Quick Way)
