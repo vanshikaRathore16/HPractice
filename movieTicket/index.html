@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width>, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css" >
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <h1>movie select system</h1>
+     <select id="muvieSelect">
+        <option value = "">select movie</option>
+        <option value="200">shiva</option>
+        <option value="300">rembere me</option>
+        <option value="500">my foult</option>
+     </select>
+     <select id="threaterSelect">
+      <option value = "">select threater</option>
+        <option value="PVR">PvR</option>
+        <option value="california">california</option>
+        <option value="new york">new york</option>
+     </select>
+     <button id = "btnApply">apply</button>
+     <div id = "output" class="output hidden"></div>
+     <div id = "seatContainer" class="seatContainer hidden"></div>
+     <div class="summery hidden" id = "summery">
+        <p id="count">seat<span>0</span></p>
+        <p id="price">price<span>0</span></p>
+        <button id="bookBtn">book</button>
+     </div>
+
+      <div class="model hidden" id = "model">
+           <div class="model-container">
+            <p id="model-seat">Seat <span>0</span></p>
+            <p id="model-price">price <span>0</span></p>
+            <div>
+                <button id = "confirmBtn">confrim</button>
+                <button id="cancelBtn">cancel</button>
+            </div>
+           </div>
+      </div>
+     </div>
+     <script src="script.js"></script>
+</body>
+</html>
