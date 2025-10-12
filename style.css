@@ -1,0 +1,95 @@
+
+
+#seatContainer{
+    display: grid;
+    grid-template-columns: repeat(8,40px);
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.seat{
+    background-color: #eee;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.seat:hover{
+    background-color: #a0e7e5;
+}
+
+.seat.selected{
+    background-color: #6feaf6;
+}
+
+.summery{
+    text-align: center;
+    margin-top: 20px;
+}
+
+#btn{
+    background-color: #008cba;
+    color: wheat;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#btn:disabled{
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.model {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  width: 340px;
+  padding: 25px 35px;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  
+} 
+
+.model-content{
+    backdrop-filter: white;
+     padding: 10px 15px;
+    border-radius: 8px;
+    text-align: center;
+    min-height: auto;
+}
+
+.model-button{
+    margin: 10px;
+    padding: 4px ;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+}
+
+ #confirmbtn{
+    background-color: #28a745;
+    color: white;
+     
+}
+
+#cancelbtn{
+    background-color: #dc3545;
+    color: white;
+      
+} 
+.hidden{
+    display: none !important;;
+}
