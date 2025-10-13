@@ -209,3 +209,59 @@ confirmBtn.addEventListener("click", () => {
     selectedSeat = [];
     model.classList.add("hidden");
 })
+
+
+// muvieSelect – You wrote muvie instead of movie.
+
+// Everywhere you use muvieSelect, muvieValue, muvieName – technically it works but the correct spelling is movie.
+
+// threaterName – You wrote threater instead of theater.
+
+// Should be theaterName.
+
+// selecteSeat – You wrote selecte instead of select.
+
+// The function name can be selectSeat for clarity.
+
+// Minor: bookedSeatedKey → bookedSeatKey
+
+// Seated is a typo; it should be Seat.
+
+// Alerts: alert(Please select at least ${minTicket} ticket) – fine, but consider plural:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// muvieSelect → should be movieSelect
+
+// Similarly, everywhere in JS you use muvieSelect, rename to movieSelect.
+
+// removeBtn → you wrote remove as the button text, but your JS uses removeBtn. It’s fine, just be consistent.
+
+// model / model-content → should be modal / modal-content if you mean a popup dialog, since Bootstrap uses modal, not model. Using model won’t break JS but is semantically incorrect.
+
+// summery → should be summary
+
+// Your JS uses summery – just rename it for correct spelling.
+
+// Minor: In <select> placeholders, you wrote:
+
+// movie name → should be Select Movie (capitalized for clarity)
+
+// theater name → should be Select Theater
