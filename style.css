@@ -2,7 +2,7 @@
 
 #seatContainer{
     display: grid;
-    grid-template-columns: repeat(8,40px);
+    grid-template-columns: repeat(6,40px);
     gap: 10px;
     justify-content: center;
     margin-top: 20px;

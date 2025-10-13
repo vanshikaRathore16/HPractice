@@ -12,23 +12,23 @@
 </head>
 <body>
     <div>
-      <h1>revert cross check
-      </h1>
+
        <h1 class="text-center mb-4 text-primary">muvie management system</h1>
        <div class="selection d-flex gap-2 align-items-center mt-3" >
          <select id = "muvieSelect" class="custom-select mr-2">
-           <option value="">muvie name </option>
+           <option value="" selected disabled>muvie name </option>
            <option value="200">Avengers(&#8377;200)</option>
            <option value="150">Inception(&#8377;150)</option>
            <option value="250">Barbie(&#8377;250)</option>
          </select>  
          <select id="theaterSelect" class="custom-select mr-2">
-            <option value="">theater name</option>
+            <option value="" selected disabled>theater name</option>
             <option value="PVR">PVR Cinemas</option>
             <option value="Inox">INOX</option>
             <option value="Carnival">Carnival</option>
          </select>
          <button id = "applyBtn" class="btn btn-primary">apply</button>
+         <button id = "resetBtn">reset</button>
        </div>
        <!-- output -->
        <div class="output hidden alert alert-success mt-3" id = "output"></div>
