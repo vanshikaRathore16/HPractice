@@ -134,4 +134,35 @@ confirmBtn.addEventListener("click",()=>{
 
 function getBookedSeatKey(movie,theater){
     return `bookedSeat_${movie}_${theater}`
+
 }
+
+// confirmBtn.addEventListener("click", () => {
+//   const movieValue = muvieSelect.value;
+//   const theaterValue = theaterSelect.value;
+//   const movieName = muvieSelect.options[muvieSelect.selectedIndex].text.split("(")[0].trim();
+//   const theaterName = theaterSelect.options[theaterSelect.selectedIndex].text;
+//   const bookedSeatKey = getBookedSeatKey(movieValue, theaterValue);
+//   const bookedSeats = JSON.parse(localStorage.getItem(bookedSeatKey)) || [];
+
+//   // get selected seat numbers
+//   const seatNumbers = selectedSeat.map(seat => [...seatContainer.children].indexOf(seat));
+
+//   // mark seats as booked
+//   selectedSeat.forEach(seat => {
+//     seat.classList.remove("selected");
+//     seat.classList.add("occupied");
+//     seat.disabled = true;
+//   });
+
+//   // save booked seats to local storage
+//   localStorage.setItem(bookedSeatKey, JSON.stringify([...bookedSeats, ...seatNumbers]));
+
+//   // ✅ Show booking confirmation alert
+//   alert(`🎉 Booking Confirmed for '${movieName}' | Seats: ${seatNumbers.map(num => "A" + num).join(", ")} | Total: ₹${totalPrice}`);
+
+//   // reset and hide modal
+//   updateSummery();
+//   selectedSeat = [];
+//   model.classList.add("hidden");
+// });
