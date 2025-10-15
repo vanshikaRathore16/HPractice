@@ -1,14 +1,12 @@
-
-
-#seatContainer{
+#seatContainer {
     display: grid;
-    grid-template-columns: repeat(6,40px);
+    grid-template-columns: repeat(6, 40px);
     gap: 10px;
     justify-content: center;
     margin-top: 20px;
 }
 
-.seat{
+.seat {
     background-color: #eee;
     border: none;
     border-radius: 6px;
@@ -18,20 +16,20 @@
     transition: 0.3s;
 }
 
-.seat:hover{
+.seat:hover {
     background-color: #a0e7e5;
 }
 
-.seat.selected{
+.seat.selected {
     background-color: #6feaf6;
 }
 
-.summery{
+.summery {
     text-align: center;
     margin-top: 20px;
 }
 
-#btn{
+#btn {
     background-color: #008cba;
     color: wheat;
     border: none;
@@ -40,56 +38,58 @@
     cursor: pointer;
 }
 
-#btn:disabled{
+#btn:disabled {
     background-color: grey;
     cursor: not-allowed;
 }
 
 .model {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-  width: 340px;
-  padding: 25px 35px;
-  text-align: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease;
-  
-} 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    width: 340px;
+    padding: 25px 35px;
+    text-align: center;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
 
-.model-content{
+}
+
+.model-content {
     backdrop-filter: white;
-     padding: 10px 15px;
+    padding: 10px 15px;
     border-radius: 8px;
     text-align: center;
     min-height: auto;
 }
 
-.model-button{
+.model-button {
     margin: 10px;
-    padding: 4px ;
+    padding: 4px;
     cursor: pointer;
     border-radius: 5px;
     border: none;
     font-size: 14px;
 }
 
- #confirmbtn{
+#confirmbtn {
     background-color: #28a745;
     color: white;
-     
+
 }
 
-#cancelbtn{
+#cancelbtn {
     background-color: #dc3545;
     color: white;
-      
-} 
-.hidden{
-    display: none !important;;
+
+}
+
+.hidden {
+    display: none !important;
+    ;
 }

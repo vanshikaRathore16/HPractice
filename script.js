@@ -12,19 +12,41 @@ const confirmBtn = document.getElementById("confirmbtn")
 const cancelBtn = document.getElementById("cancelbtn")
 const modelSeat = document.getElementById("modelSeat");
 const modelPrice = document.getElementById("modelPrice");
-const removeBtn = document.getElementById("resetBtn");
+const removeBtn = document.getElementById("removeBtn");
 let totalPrice = 0;
 let ticketPrice = 0;
 let selectedSeat = [];
 const maxTicket = 4;
 const minTicket = 1;
 
-function setSeatname(i){
-    let rows = ["A","B","C","D",'E'];
+function setSeatname(i) {
+    let rows = ["A", "B", "C", "D", 'E'];
     let cols = 6;
-    let r = rows[Math.floor(i/cols)];
+    let r = rows[Math.floor(i / cols)];
     let c = (i % cols) + 1;
-    return r+c;
+    return r + c;
+}
+
+
+muvieSelect.addEventListener("change", handleSelectionChange);
+theaterSelect.addEventListener("change", handleSelectionChange);
+
+function handleSelectionChange() {
+    const movieValue = muvieSelect.value;
+    const theaterValue = theaterSelect.value;
+
+    if (movieValue && theaterValue) {
+        localStorage.setItem("selectedMuvie", movieValue);
+        localStorage.setItem("selectedTheater", theaterValue);
+        ticketPrice = parseInt(movieValue);
+        showOutput();
+        seatLayout();
+    } else {
+        output.innerHTML = "";
+        seatContainer.innerHTML = "";
+        summery.classList.add("hidden");
+        output.classList.add("hidden");
+    }
 }
 
 removeBtn.addEventListener("click", () => {
@@ -59,23 +81,23 @@ function getBookedSeatKey(movie, theater) {
     return `bookedSeat_${movie}_${theater}`
 }
 
-applyBtn.addEventListener("click", () => {
-    const movieValue = muvieSelect.value;
-    const theaterValue = theaterSelect.value;
-    console.log(movieValue, theaterValue);
+// applyBtn.addEventListener("click", () => {
+//     const movieValue = muvieSelect.value;
+//     const theaterValue = theaterSelect.value;
+//     console.log(movieValue, theaterValue);
 
-    if (!movieValue || !theaterValue) {
-        alert("please select both movie and theater")
-        return
-    }
-    localStorage.setItem("selectedMuvie", movieValue);
-    localStorage.setItem("selectedTheater", theaterValue);
-    console.log("data save in local storage")
-    ticketPrice = parseInt(movieValue);
-    console.log("ticket price click", ticketPrice);
-    showOutput();
-    seatLayout();
-})
+//     if (!movieValue || !theaterValue) {
+//         alert("please select both movie and theater")
+//         return
+//     }
+//     localStorage.setItem("selectedMuvie", movieValue);
+//     localStorage.setItem("selectedTheater", theaterValue);
+//     console.log("data save in local storage")
+//     ticketPrice = parseInt(movieValue);
+//     console.log("ticket price click", ticketPrice);
+//     showOutput();
+//     seatLayout();
+// })
 
 function showOutput() {
     const muvieValue = muvieSelect.value;
@@ -121,37 +143,37 @@ function showOutput() {
 //         seat.addEventListener("click", () => { selecteSeat(seat) });
 //         seatContainer.appendChild(seat);
 //     }
-    
+
 //     updateSummery();
 // }
 
-function seatLayout(){
-seatContainer.innerHTML = "";
-  let muvie = muvieSelect.value;
-  let theater = theaterSelect.value;
-  summery.classList.remove("hidden");
-  let BS = JSON.parse(localStorage.getItem(getBookedSeatKey(muvie, theater))) || [];
-  let seatIndex = Array.from({ length: 24 }, (_, i) => i + 1);
-  const rows = ["A", "B", "C", "D"];
-  let cols = 6;
-  for(let i in seatIndex){
-     let num = parseInt(i);
-     let rowLetter = rows[Math.floor(num/cols)];
-     let colNumber = (num % cols) + 1;
-     let seatName = `${rowLetter}${colNumber}`
+function seatLayout() {
+    seatContainer.innerHTML = "";
+    let muvie = muvieSelect.value;
+    let theater = theaterSelect.value;
+    summery.classList.remove("hidden");
+    let BS = JSON.parse(localStorage.getItem(getBookedSeatKey(muvie, theater))) || [];
+    let seatIndex = Array.from({ length: 24 }, (_, i) => i + 1);
+    const rows = ["A", "B", "C", "D"];
+    let cols = 6;
+    for (let i in seatIndex) {
+        let num = parseInt(i);
+        let rowLetter = rows[Math.floor(num / cols)];
+        let colNumber = (num % cols) + 1;
+        let seatName = `${rowLetter}${colNumber}`
 
-     let seat = document.createElement("button");
-     seat.classList.add("seat");
-     seat.textContent = seatName;
-     if(BS.includes(seatName)){
-        seat.classList.add("occupied");
-        seat.disabled = true;
-     }
-     seat.addEventListener("click",()=>{
-        selecteSeat(seat);
-     })
-     seatContainer.appendChild(seat);
-  }
+        let seat = document.createElement("button");
+        seat.classList.add("seat");
+        seat.textContent = seatName;
+        if (BS.includes(seatName)) {
+            seat.classList.add("occupied");
+            seat.disabled = true;
+        }
+        seat.addEventListener("click", () => {
+            selecteSeat(seat);
+        })
+        seatContainer.appendChild(seat);
+    }
     updateSummery()
 }
 
@@ -159,7 +181,7 @@ function selecteSeat(seat) {
     seat.classList.toggle("selected");
     let nodelist = document.querySelectorAll(".seat.selected");
     selectedSeat = [...nodelist];
-    if(selectedSeat.length > maxTicket){
+    if (selectedSeat.length > maxTicket) {
         seat.classList.remove("selected");
         alert(`Max ticket limit is ${maxTicket}`)
         selectedSeat.pop();
@@ -186,11 +208,11 @@ cancelBtn.addEventListener("click", () => {
     model.classList.add("hidden")
 })
 
-confirmBtn.addEventListener("click", () => { 
-    if(selectedSeat.length < minTicket){
+confirmBtn.addEventListener("click", () => {
+    if (selectedSeat.length < minTicket) {
         alert(`Please select at least ${minTicket} ticket`)
         return
-    } 
+    }
     const movie = muvieSelect.value;
     const theater = theaterSelect.value;
     const bookedSeatedKey = getBookedSeatKey(movie, theater);
@@ -209,59 +231,3 @@ confirmBtn.addEventListener("click", () => {
     selectedSeat = [];
     model.classList.add("hidden");
 })
-
-
-// muvieSelect – You wrote muvie instead of movie.
-
-// Everywhere you use muvieSelect, muvieValue, muvieName – technically it works but the correct spelling is movie.
-
-// threaterName – You wrote threater instead of theater.
-
-// Should be theaterName.
-
-// selecteSeat – You wrote selecte instead of select.
-
-// The function name can be selectSeat for clarity.
-
-// Minor: bookedSeatedKey → bookedSeatKey
-
-// Seated is a typo; it should be Seat.
-
-// Alerts: alert(Please select at least ${minTicket} ticket) – fine, but consider plural:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// muvieSelect → should be movieSelect
-
-// Similarly, everywhere in JS you use muvieSelect, rename to movieSelect.
-
-// removeBtn → you wrote remove as the button text, but your JS uses removeBtn. It’s fine, just be consistent.
-
-// model / model-content → should be modal / modal-content if you mean a popup dialog, since Bootstrap uses modal, not model. Using model won’t break JS but is semantically incorrect.
-
-// summery → should be summary
-
-// Your JS uses summery – just rename it for correct spelling.
-
-// Minor: In <select> placeholders, you wrote:
-
-// movie name → should be Select Movie (capitalized for clarity)
-
-// theater name → should be Select Theater
