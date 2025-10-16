@@ -2608,3 +2608,1703 @@ Do you want me to make that demo?
 
 No file chosenNo file chosen
 ChatGPT can make mistakes. Check important info. See Cookie Preferences.
+--------------------------------------------------------------------------------------------------------
+What is Two-Way Data Binding?
+
+Two-way data binding means a two-directional connection between the component class (TypeScript code) and the template (HTML).
+
+That means:
+✅ When you change data in the component, it updates in the view (HTML).
+✅ When you change data in the view (like typing in an input), it updates the component variable automatically.
+
+🔁 In Simple Words:
+
+Whatever changes in UI reflects in the component,
+and whatever changes in the component reflects in the UI.
+
+2️⃣ Why Do We Need Two-Way Data Binding?
+
+Without it, you’d need to manually handle both:
+
+Updating the view (Property Binding)
+
+Reading user input (Event Binding)
+
+For example 👇
+
+<input [value]="username" (input)="username = $event.target.value">
+<p>{{ username }}</p>
+
+
+This is manual two-way binding.
+Angular’s [(ngModel)] just combines both automatically!
+
+3️⃣ Two-Way Data Binding Syntax
+
+The banana in a box syntax 🍌📦:
+
+<input [(ngModel)]="username">
+
+
+[] → Property Binding (View ← Component)
+
+() → Event Binding (View → Component)
+
+Combined as [( )] → Two-Way Binding
+
+Component:
+export class AppComponent {
+  username = 'Vanshika';
+}
+
+Template:
+<input [(ngModel)]="username" placeholder="Enter name">
+<p>Hello {{ username }}</p>
+
+
+✅ Typing in the input updates username variable.
+✅ Changing variable in code updates input field automatically.
+
+4️⃣ How Two-Way Binding Actually Works Internally
+
+Under the hood, Angular’s two-way binding is just a shortcut for combining property and event binding:
+
+<input [ngModel]="username" (ngModelChange)="username = $event">
+
+
+[ngModel] → sets the value of input
+
+(ngModelChange) → listens for changes and updates component property
+
+[(ngModel)] = [ngModel] + (ngModelChange)
+
+5️⃣ Setting Up ngModel (FormsModule)
+
+To use [(ngModel)], you must import FormsModule from @angular/forms.
+
+app.module.ts
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [BrowserModule, FormsModule],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+If you forget FormsModule, Angular gives error:
+
+"Can’t bind to ‘ngModel’ since it isn’t a known property of ‘input’."
+
+6️⃣ Example with Multiple Inputs
+<input [(ngModel)]="firstName" placeholder="First Name">
+<input [(ngModel)]="lastName" placeholder="Last Name">
+
+<p>Your full name: {{ firstName }} {{ lastName }}</p>
+
+
+Component:
+
+export class AppComponent {
+  firstName = '';
+  lastName = '';
+}
+
+
+✅ As you type, both variables update live.
+
+7️⃣ Two-Way Binding with Select Dropdown
+<select [(ngModel)]="selectedCity">
+  <option value="ujjain">Ujjain</option>
+  <option value="indore">Indore</option>
+  <option value="bhopal">Bhopal</option>
+</select>
+
+<p>You selected: {{ selectedCity }}</p>
+
+
+Component:
+
+selectedCity = 'ujjain';
+
+
+✅ Automatically selects & updates when changed.
+
+8️⃣ Two-Way Binding with Radio Buttons
+<label><input type="radio" name="gender" value="male" [(ngModel)]="gender"> Male</label>
+<label><input type="radio" name="gender" value="female" [(ngModel)]="gender"> Female</label>
+
+<p>Gender: {{ gender }}</p>
+
+
+Component:
+
+gender = 'female';
+
+
+✅ UI and variable stay in sync.
+
+9️⃣ Two-Way Binding in Child Components (Custom Binding)
+
+You can also create your own two-way binding using @Input() and @Output().
+
+Example:
+Child Component (counter.component.ts)
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-counter',
+  template: `
+    <button (click)="decrease()">-</button>
+    {{ count }}
+    <button (click)="increase()">+</button>
+  `
+})
+export class CounterComponent {
+  @Input() count = 0;
+  @Output() countChange = new EventEmitter<number>();
+
+  increase() {
+    this.count++;
+    this.countChange.emit(this.count);
+  }
+
+  decrease() {
+    this.count--;
+    this.countChange.emit(this.count);
+  }
+}
+
+Parent Component:
+<app-counter [(count)]="total"></app-counter>
+<p>Parent Total: {{ total }}</p>
+
+
+Component:
+
+total = 5;
+
+
+✅ This is custom two-way binding — your own variable (count) behaves like [(ngModel)].
+
+🔟 Difference Between One-Way and Two-Way Binding
+Type	Direction	Example	Description
+One-Way (Interpolation)	Component → View	{{ data }}	Displays data only
+Property Binding	Component → View	[value]="data"	Binds value one-way
+Event Binding	View → Component	(click)="method()"	Sends data upward
+Two-Way Binding	Both directions	[(ngModel)]="data"	Syncs view & component
+1️⃣1️⃣ Advantages
+
+✅ Real-time synchronization between UI and logic
+✅ Less boilerplate code (no need for separate event handling)
+✅ Cleaner template
+✅ Easier to build forms and interactive UIs
+
+1️⃣2️⃣ When to Use and When Not To
+
+✅ Use:
+
+For simple forms or small apps
+
+When real-time update between component and view is required
+
+❌ Avoid:
+
+In complex, large-scale apps → use Reactive Forms instead (more control & validation)
+
+1️⃣3️⃣ Common Mistakes
+
+❌ Forgetting to import FormsModule
+❌ Using [(ngModel)] on non-form elements like <div>
+❌ Confusing [ngModel] (one-way) with [(ngModel)] (two-way)
+
+1️⃣4️⃣ Summary / Cheat Sheet
+Concept	Syntax	Description
+Two-way binding	[(ngModel)]="property"	Syncs data both ways
+Required module	FormsModule	Import in app.module.ts
+Works on	Form elements (input, select, textarea)	Not normal div
+Behind the scenes	[ngModel] + (ngModelChange)	Combines property & event binding
+Custom two-way	@Input() + @Output() + EventEmitter	For your own components
+------------------------------------------------------------------------------------------------------
+What is a Directive?
+
+A directive in Angular is a special instruction to the DOM that tells Angular to change the behavior or appearance of elements in the template.
+
+👉 In simple words:
+
+A directive adds extra power to HTML by teaching elements new behaviors or rules.
+
+📘 Example:
+<p *ngIf="isLoggedIn">Welcome, Vanshika!</p>
+
+
+Here:
+
+*ngIf is a built-in directive
+
+It adds/removes the <p> element based on isLoggedIn
+
+2️⃣ Why We Use Directives?
+
+Directives allow us to:
+
+Manipulate the DOM (add/remove/change elements)
+
+Add dynamic behavior to HTML
+
+Reuse logic across multiple components
+
+Create our own custom HTML attributes
+
+3️⃣ How Directives Work
+
+Angular runs a compiler on your HTML templates.
+When it finds a directive selector, it attaches that directive’s logic to the element.
+
+For example:
+
+<button appHighlight>Hover me!</button>
+
+
+If we create a directive appHighlight, Angular will find this element and apply the logic written inside it (like changing background color).
+
+4️⃣ Types of Directives
+
+There are three main types:
+
+Type	Description	Example
+Component Directive	Has a template — basically a component	@Component({...})
+Structural Directive	Adds or removes elements in the DOM	*ngIf, *ngFor, *ngSwitchCase
+Attribute Directive	Changes the appearance or behavior of an element	ngClass, ngStyle, custom attribute directives
+5️⃣ Structural Directives (change DOM structure)
+
+These directives add/remove elements from the DOM.
+
+📌 Example 1: *ngIf
+<p *ngIf="isLoggedIn">Welcome, Vanshika!</p>
+
+
+Component:
+
+isLoggedIn = true;
+
+
+✅ If isLoggedIn = true → element is created
+❌ If false → element is removed completely
+
+📌 Example 2: *ngFor
+<li *ngFor="let city of cities">{{ city }}</li>
+
+
+Component:
+
+cities = ['Ujjain', 'Indore', 'Bhopal'];
+
+
+✅ Repeats the element for each array item
+
+📌 Example 3: *ngSwitch
+<div [ngSwitch]="day">
+  <p *ngSwitchCase="'monday'">Start fresh!</p>
+  <p *ngSwitchCase="'friday'">Weekend is near!</p>
+  <p *ngSwitchDefault>Have a great day!</p>
+</div>
+
+
+Component:
+
+day = 'friday';
+
+
+✅ Shows only the matching case
+
+6️⃣ Attribute Directives (change look or behavior)
+
+Attribute directives modify an element’s behavior or styling without changing the DOM structure.
+
+📌 Example 1: ngStyle
+<p [ngStyle]="{'color': isRed ? 'red' : 'blue'}">Hello!</p>
+
+
+Component:
+
+isRed = true;
+
+
+✅ Dynamically changes CSS style
+
+📌 Example 2: ngClass
+<p [ngClass]="{'active': isActive, 'disabled': !isActive}">Welcome</p>
+
+
+Component:
+
+isActive = true;
+
+
+✅ Dynamically applies CSS classes
+
+7️⃣ Custom Attribute Directive (Your Own Directive)
+
+You can create your own directive using CLI:
+
+ng g d highlight
+
+
+This creates:
+
+highlight.directive.ts
+
+Automatically declares it in app.module.ts
+
+Example: Highlight Directive
+highlight.directive.ts
+import { Directive, ElementRef, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+
+  constructor(private el: ElementRef) {}
+
+  @HostListener('mouseenter') onMouseEnter() {
+    this.el.nativeElement.style.backgroundColor = 'yellow';
+  }
+
+  @HostListener('mouseleave') onMouseLeave() {
+    this.el.nativeElement.style.backgroundColor = null;
+  }
+}
+
+app.component.html
+<p appHighlight>Hover over me!</p>
+
+
+✅ When you hover → background turns yellow
+✅ When you leave → background resets
+
+Explanation:
+Decorator	Purpose
+@Directive()	Defines a directive class
+selector	Used as HTML attribute name
+ElementRef	Accesses the DOM element
+HostListener()	Listens for events on the host element
+8️⃣ Custom Structural Directive Example
+
+Example: Custom *appIf directive
+
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+
+@Directive({
+  selector: '[appIf]'
+})
+export class AppIfDirective {
+  @Input() set appIf(condition: boolean) {
+    if (condition) {
+      this.viewContainer.createEmbeddedView(this.templateRef);
+    } else {
+      this.viewContainer.clear();
+    }
+  }
+
+  constructor(private templateRef: TemplateRef<any>,
+              private viewContainer: ViewContainerRef) {}
+}
+
+
+HTML:
+
+<p *appIf="true">I will appear!</p>
+
+
+✅ Works like *ngIf — you just created your own structural directive! 💪
+
+9️⃣ Key Decorators Used in Directives
+Decorator	Used For	Example
+@Directive()	Declares a directive	@Directive({ selector: '[appHighlight]' })
+@Input()	Accepts values from HTML	@Input() color: string;
+@HostListener()	Listens to DOM events	@HostListener('click') onClick() { ... }
+@HostBinding()	Binds properties to host element	@HostBinding('style.color') color = 'red';
+🔟 Summary / Cheat Sheet
+Type	Example	Purpose
+Component Directive	@Component	Has HTML + logic
+Structural Directive	*ngIf, *ngFor	Add/Remove DOM elements
+Attribute Directive	ngClass, ngStyle, appHighlight	Change appearance or behavior
+
+---------------------------------------------------------------------------------------------------------
+What is *ngIf?
+📘 Definition:
+
+*ngIf is a structural directive that adds or removes elements from the DOM based on a condition.
+
+👉 Think of it like saying:
+
+“Show this element only if the condition is true.”
+
+📖 Syntax:
+<p *ngIf="isLoggedIn">Welcome, Vanshika!</p>
+
+📂 Component:
+isLoggedIn = true;
+
+
+✅ Output (since isLoggedIn = true):
+
+Welcome, Vanshika!
+
+
+❌ If you set isLoggedIn = false, Angular completely removes that <p> element from the DOM (not just hides it).
+
+⚙️ How it works internally:
+
+When Angular sees *ngIf, it:
+
+Creates or removes a view (a DOM section).
+
+It’s actually syntactic sugar for <ng-template>.
+
+Example — what Angular internally converts it into:
+
+<ng-template [ngIf]="isLoggedIn">
+  <p>Welcome, Vanshika!</p>
+</ng-template>
+
+
+Angular only creates that <p> when isLoggedIn is true.
+
+🧠 Why we use it:
+
+To show/hide UI parts dynamically (like login/logout)
+
+Prevent rendering unnecessary elements
+
+Improve performance by not creating hidden DOM
+
+💡 Advanced Example: else clause
+<p *ngIf="isLoggedIn; else loginMsg">Welcome Back!</p>
+<ng-template #loginMsg>
+  <p>Please log in first.</p>
+</ng-template>
+
+
+✅ If isLoggedIn is true → “Welcome Back!”
+❌ If false → “Please log in first.”
+
+⚡ Tip:
+
+*ngIf is best for conditional rendering
+NOT for toggling visibility — for that, use [hidden] or [ngClass].
+
+🌟 2️⃣ What is *ngFor?
+📘 Definition:
+
+*ngFor is a structural directive that repeats an element for every item in a list or array.
+
+👉 Think of it like a loop inside HTML.
+
+📖 Syntax:
+<li *ngFor="let city of cities">{{ city }}</li>
+
+📂 Component:
+cities = ['Ujjain', 'Indore', 'Bhopal'];
+
+
+✅ Output:
+
+Ujjain
+Indore
+Bhopal
+
+⚙️ How it works internally:
+
+Just like *ngIf, it uses an <ng-template> behind the scenes.
+
+Angular creates a new <li> element for every item in cities.
+
+Internally, it becomes:
+
+<ng-template ngFor let-city [ngForOf]="cities">
+  <li>{{ city }}</li>
+</ng-template>
+
+💡 Local Variables in *ngFor
+
+You can access built-in context variables inside *ngFor.
+
+Variable	Meaning	Example
+index	current item index (0,1,2,...)	{{ i }}
+first	true for first item	*ngIf="first"
+last	true for last item	*ngIf="last"
+even	true for even index	*ngIf="even"
+odd	true for odd index	*ngIf="odd"
+
+Example:
+
+<li *ngFor="let city of cities; let i = index; let odd = odd">
+  {{ i }} - {{ city }} - {{ odd ? 'odd' : 'even' }}
+</li>
+
+
+✅ Output:
+
+0 - Ujjain - even
+1 - Indore - odd
+2 - Bhopal - even
+
+⚙️ Track By Function (for performance)
+
+Angular re-renders a list each time it changes.
+To avoid that, use trackBy to identify unique items efficiently.
+
+<li *ngFor="let user of users; trackBy: trackByUserId">
+  {{ user.name }}
+</li>
+
+
+Component:
+
+users = [
+  { id: 1, name: 'Vanshika' },
+  { id: 2, name: 'Atul' }
+];
+
+trackByUserId(index: number, user: any): number {
+  return user.id;
+}
+
+
+✅ This helps Angular reuse DOM elements instead of destroying/recreating them.
+
+🌸 3️⃣ Combining *ngIf and *ngFor
+
+You can use both together carefully.
+But Angular doesn’t allow multiple structural directives on the same element.
+
+❌ Wrong:
+
+<li *ngIf="isLoggedIn" *ngFor="let city of cities">{{ city }}</li>
+
+
+✅ Right (use <ng-container>):
+
+<ng-container *ngIf="isLoggedIn">
+  <li *ngFor="let city of cities">{{ city }}</li>
+</ng-container>
+
+
+✔ ng-container doesn’t appear in DOM — it’s just a logical wrapper.
+
+⚡ 4️⃣ Difference Between *ngIf and *ngFor
+Feature	*ngIf	*ngFor
+Purpose	Conditionally show/hide element	Repeat element for list
+Adds/Removes DOM	Yes	Yes (for each item)
+Works On	Boolean condition	Iterable (array, list)
+Output	0 or 1 element	0 or many elements
+Performance	High (less DOM)	Can be costly if list is huge
+Example	*ngIf="isLoggedIn"	*ngFor="let city of cities"
+🧭 5️⃣ Behind the Scenes (Deep View)
+
+Both *ngIf and *ngFor are structural directives — meaning:
+
+They manipulate the DOM tree.
+
+They both use Angular’s ViewContainerRef (to add/remove elements) and TemplateRef (to store HTML).
+
+So:
+
+*ngIf="condition"
+
+
+→ internally creates/removes a “view” dynamically.
+
+*ngFor="let item of items"
+
+
+→ internally creates multiple “embedded views.”
+
+🧠 6️⃣ Real-World Use Cases
+
+✅ *ngIf
+
+Show login/logout buttons
+
+Show loader while fetching data
+
+Hide components if user not authorized
+
+✅ *ngFor
+
+Display lists, menus, or tables
+
+Render cards or user profiles
+
+Generate dynamic forms
+
+💎 7️⃣ Summary
+Directive	Purpose	Key Use
+*ngIf	Show or hide element	Conditional rendering
+*ngFor	Loop over a list	Render list items
+Common Feature	Both manipulate the DOM	Structural Directives
+
+---------------------------------------------------------------------------------------------------------
+What is @ViewChild?
+
+@ViewChild is a decorator in Angular that lets a component access a DOM element, template reference, or child component directly from the TypeScript code.
+
+In simple words:
+
+“It lets your component ‘see’ and control something inside its template.”
+
+2️⃣ Why Do We Use It?
+
+To manipulate DOM elements directly (like focus, scroll, style)
+
+To call methods or access properties of a child component
+
+To access template reference variables (#var) in your TS code
+
+3️⃣ Basic Syntax
+@ViewChild('templateRefName') variableName: ElementRef;
+
+
+'templateRefName' → the template reference variable in HTML (#myDiv)
+
+variableName → variable in TypeScript that holds the DOM reference
+
+Type → usually ElementRef for native DOM or child component class for component access
+
+4️⃣ Simple Example: Access DOM Element
+HTML
+<div #myDiv>Hello Vanshika!</div>
+<button (click)="changeColor()">Change Color</button>
+
+Component
+import { Component, ViewChild, ElementRef } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html'
+})
+export class AppComponent {
+  @ViewChild('myDiv') div!: ElementRef;
+
+  changeColor() {
+    this.div.nativeElement.style.color = 'red';
+  }
+}
+
+
+✅ Clicking the button changes the text color to red.
+
+div.nativeElement → gives access to the actual DOM element
+
+You can now manipulate style, classes, focus, scroll, or text content
+
+5️⃣ Accessing Child Component
+
+Suppose you have a child component:
+
+Child Component
+@Component({
+  selector: 'app-child',
+  template: `<p>Hello from Child!</p>`
+})
+export class ChildComponent {
+  greet() {
+    alert('Hi from Child Component!');
+  }
+}
+
+Parent Component HTML
+<app-child #childComp></app-child>
+<button (click)="callChild()">Greet</button>
+
+Parent Component TS
+@ViewChild('childComp') child!: ChildComponent;
+
+callChild() {
+  this.child.greet();
+}
+
+
+✅ Clicking button calls child component’s greet() method
+
+6️⃣ Important Notes about @ViewChild
+
+Timing
+
+@ViewChild elements are not available in constructor
+
+Access them in ngAfterViewInit() lifecycle hook
+
+ngAfterViewInit() {
+  console.log(this.div.nativeElement.textContent);
+}
+
+
+Static vs Dynamic Views
+
+@ViewChild('myDiv', { static: true }) → available before ngAfterViewInit
+
+@ViewChild('myDiv', { static: false }) → available after ngAfterViewInit (default)
+
+Use static: true for elements that don’t change with *ngIf
+
+Use static: false for elements inside *ngIf or *ngFor
+
+Accessing Multiple Elements → use @ViewChildren
+
+@ViewChildren('myDiv') divs!: QueryList<ElementRef>;
+
+
+Returns a list of elements
+
+Useful when looping or rendering multiple elements with *ngFor
+
+7️⃣ Real-World Use Cases
+
+✅ Focus input on load
+
+@ViewChild('myInput') input!: ElementRef;
+
+ngAfterViewInit() {
+  this.input.nativeElement.focus();
+}
+
+
+✅ Scroll to a section
+
+this.div.nativeElement.scrollIntoView({ behavior: 'smooth' });
+
+
+✅ Call child component methods
+✅ Change DOM styles dynamically
+
+8️⃣ Summary / Cheat Sheet
+Feature	Usage	Example
+Access DOM	@ViewChild('myDiv') div: ElementRef	div.nativeElement.style.color='red'
+Access Child Component	@ViewChild(ChildComponent) child	child.greet()
+Timing	Use ngAfterViewInit	Don’t access in constructor
+Static	{ static: true/false }	For elements inside *ngIf, use false
+Multiple elements	@ViewChildren	Returns QueryList
+
+✅ Rule of Thumb:
+
+Use @ViewChild when you need direct access to a DOM element or child component in TypeScript.
+Prefer Angular bindings ([value], (click), [(ngModel)]) when possible — manipulate DOM directly only when necessary.
+
+---------------------------------------------------------------------------------------------------
+What Are Lifecycle Hooks?
+
+Angular components and directives have a life cycle — from creation → rendering → updating → destruction.
+
+Lifecycle Hooks are methods that Angular calls at specific moments in this life cycle so we can run custom code at those moments.
+
+2️⃣ Why We Use Lifecycle Hooks?
+
+Initialize component properties (ngOnInit)
+
+Fetch data from API after component is ready
+
+Respond to input property changes (ngOnChanges)
+
+Detect view rendering (ngAfterViewInit)
+
+Clean up resources (ngOnDestroy)
+
+Optimize performance and manage logic at correct timing
+
+3️⃣ List of All Angular Lifecycle Hooks
+Hook	When It Runs	Purpose
+ngOnChanges	Before ngOnInit, whenever input properties change	Detect changes to @Input() properties
+ngOnInit	Once, after first ngOnChanges	Initialize component, fetch data
+ngDoCheck	Every change detection cycle	Custom change detection logic
+ngAfterContentInit	After <ng-content> projected content is initialized	Access content projected into component
+ngAfterContentChecked	After every check of projected content	Detect changes in projected content
+ngAfterViewInit	After component’s view (and child views) initialized	Access template DOM & child components
+ngAfterViewChecked	After every check of component’s view	Detect changes in template or child components
+ngOnDestroy	Just before component is destroyed	Cleanup tasks (unsubscribe, stop timers, remove listeners)
+4️⃣ Detailed Explanation of Each Hook
+4.1 ngOnChanges
+
+Interface: OnChanges
+
+Signature: ngOnChanges(changes: SimpleChanges)
+
+Called: Before ngOnInit and every time an @Input() property changes
+
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  template: `<p>{{ name }}</p>`
+})
+export class ChildComponent implements OnChanges {
+  @Input() name!: string;
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('Previous:', changes.name.previousValue);
+    console.log('Current:', changes.name.currentValue);
+  }
+}
+
+
+✅ Use Case: Reacting to input property changes from parent
+
+4.2 ngOnInit
+
+Interface: OnInit
+
+Called: Once after first ngOnChanges
+
+Purpose: Initialize component properties or fetch data
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  template: `<p>{{ data }}</p>`
+})
+export class AppComponent implements OnInit {
+  data!: string;
+
+  ngOnInit() {
+    this.data = 'Component initialized!';
+    console.log('ngOnInit called');
+  }
+}
+
+
+✅ Use Case: API calls, initializing variables, starting services
+
+4.3 ngDoCheck
+
+Interface: DoCheck
+
+Called: Every change detection cycle
+
+Purpose: Custom change detection logic
+
+ngDoCheck() {
+  console.log('Change detected!');
+}
+
+
+✅ Use Case: When Angular’s default change detection is not enough
+
+4.4 ngAfterContentInit
+
+Interface: AfterContentInit
+
+Called: After projected content (<ng-content>) is initialized
+
+<!-- parent.component.html -->
+<app-child>
+  <p>Projected content!</p>
+</app-child>
+
+import { AfterContentInit, ContentChild } from '@angular/core';
+
+export class ChildComponent implements AfterContentInit {
+  @ContentChild('proj') projectedContent: any;
+
+  ngAfterContentInit() {
+    console.log('Projected content initialized');
+  }
+}
+
+
+✅ Use Case: Accessing projected content (like dynamic slots)
+
+4.5 ngAfterContentChecked
+
+Interface: AfterContentChecked
+
+Called: After every check of projected content
+
+Use Case: Respond to changes in content projection
+
+4.6 ngAfterViewInit
+
+Interface: AfterViewInit
+
+Called: After component view & child views are initialized
+
+Use Case: Access DOM elements with @ViewChild
+
+ngAfterViewInit() {
+  console.log('View initialized');
+}
+
+4.7 ngAfterViewChecked
+
+Interface: AfterViewChecked
+
+Called: After every check of component’s view
+
+Use Case: Detect or act on template changes
+
+4.8 ngOnDestroy
+
+Interface: OnDestroy
+
+Called: Just before component is destroyed
+
+Use Case: Cleanup — unsubscribe Observables, remove timers, detach event listeners
+
+ngOnDestroy() {
+  console.log('Component destroyed!');
+}
+
+5️⃣ Lifecycle Hooks Order
+
+Here’s execution order visually:
+
+ngOnChanges (if @Input() exists)
+
+ngOnInit
+
+ngDoCheck
+
+ngAfterContentInit
+
+ngAfterContentChecked
+
+ngAfterViewInit
+
+ngAfterViewChecked
+
+Steps 3, 5, 7 repeat every change detection cycle
+
+ngOnDestroy → when component is removed
+
+6️⃣ Practical Example: Combining Hooks
+export class AppComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() name = 'Vanshika';
+
+  constructor() { console.log('Constructor'); }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log('ngOnChanges', changes);
+  }
+
+  ngOnInit() {
+    console.log('ngOnInit');
+  }
+
+  ngDoCheck() {
+    console.log('ngDoCheck');
+  }
+
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit');
+  }
+
+  ngOnDestroy() {
+    console.log('ngOnDestroy');
+  }
+}
+
+
+✅ You can see the full life cycle in console logs when component is initialized, updated, or destroyed.
+
+7️⃣ Key Notes & Tips
+
+Constructor → only for dependency injection, don’t access DOM
+
+ngOnInit → initialize variables or fetch API
+
+ngAfterViewInit → access DOM (@ViewChild)
+
+ngOnDestroy → cleanup resources, unsubscribe Observables
+
+ngDoCheck → use carefully, executes many times (can affect performance)
+
+Structural directives (*ngIf, *ngFor) trigger ngOnDestroy for removed elements
+
+8️⃣ Summary / Cheat Sheet
+Hook	Purpose	Called When
+ngOnChanges	Detect @Input changes	Before ngOnInit and when input changes
+ngOnInit	Component init	Once after first ngOnChanges
+ngDoCheck	Custom change detection	Every change detection cycle
+ngAfterContentInit	Projected content init	After <ng-content> renders
+ngAfterContentChecked	Check projected content	After every projected content check
+ngAfterViewInit	View/child view init	After component template renders
+ngAfterViewChecked	Check view	After every template check
+ngOnDestroy	Cleanup	Just before component destroyed
+
+If you want, I can make a visual Angular life cycle diagram showing component creation → updates → destruction along with all hooks and their order — it makes it extremely easy to memorize and understand.
+
+Do you want me to make that diagram next?
+
+--------------------------------------------------------------------------------------------------
+Concept: What @HostBinding Really Is
+
+At its core, @HostBinding is:
+
+A decorator function that tells Angular:
+
+“Whenever this property changes in my component or directive, update this property/attribute/class/style on the host DOM element automatically.”
+
+Angular creates bindings between your TS property and the DOM property under the hood.
+
+It's reactive, so whenever your variable changes during change detection, Angular patches the DOM automatically.
+
+Think of it as a shortcut to ElementRef + Renderer2:
+
+this.el.nativeElement.style.backgroundColor = 'red';
+
+
+@HostBinding('style.backgroundColor') bgColor does the same automatically and safely in Angular’s reactive system.
+
+2️⃣ How Angular Handles @HostBinding Internally
+
+Compile Time
+
+When you decorate a property with @HostBinding, Angular registers metadata for that property.
+
+It knows:
+
+Which host element property/class/style/attribute it should control
+
+Which TS property will provide its value
+
+Change Detection
+
+During each Angular change detection cycle, Angular checks the value of your decorated property.
+
+If it changed, Angular updates the DOM safely and efficiently.
+
+Renderer2 Behind the Scenes
+
+Angular internally uses Renderer2 to apply the changes.
+
+This is better than direct DOM manipulation, because it works with:
+
+Server-side rendering (Angular Universal)
+
+Web Workers
+
+Shadow DOM
+
+Example:
+
+renderer.setStyle(this.el.nativeElement, 'background-color', this.bgColor);
+
+
+@HostBinding abstracts this for you.
+
+3️⃣ What Can You Bind With @HostBinding?
+
+Classes
+
+@HostBinding('class.active') isActive = true;
+
+
+Adds active class if isActive is true.
+
+Removes if false.
+
+Angular handles boolean toggling internally.
+
+Styles
+
+@HostBinding('style.color') textColor = 'red';
+
+
+Updates style.color dynamically
+
+Can append units like .px, .em when using numeric properties in ngStyle but with @HostBinding you usually pass full string: '20px'.
+
+Attributes
+
+@HostBinding('attr.disabled') isDisabled = false;
+
+
+Updates disabled attribute dynamically
+
+Works for ARIA attributes too (attr.aria-label).
+
+Properties
+
+@HostBinding('hidden') isHidden = true;
+
+
+Binds to the actual DOM property, not just the attribute.
+
+4️⃣ Why @HostBinding is Better Than Manual DOM Manipulation
+Feature	Manual DOM	@HostBinding
+Safety	Must use ElementRef → can break SSR	Safe with Angular Renderer2
+Change Detection	Manual check or Renderer2 calls	Automatic via Angular CD
+Reusability	Tied to specific element	Works in directives on any host element
+Maintainability	More code	Cleaner & declarative
+5️⃣ Deep Example: Class + Style + Change Detection
+import { Directive, HostBinding, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appDynamic]'
+})
+export class DynamicDirective {
+  @HostBinding('class.active') isActive = false;
+  @HostBinding('style.backgroundColor') bgColor!: string;
+
+  @HostListener('mouseenter') onEnter() {
+    this.isActive = true;
+    this.bgColor = 'yellow';
+  }
+
+  @HostListener('mouseleave') onLeave() {
+    this.isActive = false;
+    this.bgColor = '';
+  }
+}
+
+How Angular Works Internally
+
+You hover → onEnter() runs → sets isActive and bgColor.
+
+Angular marks component as dirty → runs change detection.
+
+Angular updates the DOM host element:
+
+Adds active class
+
+Sets background color to yellow
+
+You leave → onLeave() runs → isActive = false → Angular removes class and style.
+
+Everything happens reactively, without direct DOM calls.
+
+6️⃣ HostBinding + HostListener → Reactive Directive Pattern
+
+This is a common Angular design pattern:
+
+@HostListener → listen to events
+
+@HostBinding → update host element styles/classes/properties
+
+Example: Hover highlight, sticky headers, keyboard shortcuts.
+
+7️⃣ Advanced Notes
+
+Multiple @HostBindings → you can bind multiple properties and Angular will update all.
+
+Boolean logic → For classes/attributes, Angular automatically adds/removes based on true/false.
+
+Reactive Updates → If the property is updated from observable/async data, Angular still applies it during CD cycle.
+
+Avoid heavy calculations in getters → because HostBinding is evaluated each change detection.
+
+8️⃣ Assignment Ideas for Deep Practice
+Assignment 1: Hover Highlight Directive
+
+Use @HostListener for mouseenter and mouseleave
+
+Use @HostBinding for background color and font weight
+
+Assignment 2: Toggle Active Class
+
+Click element → toggle active class using @HostBinding
+
+Assignment 3: Sticky Header
+
+Listen to window:scroll using @HostListener
+
+Add/remove sticky class using @HostBinding
+
+Change background color dynamically
+
+Assignment 4: Keyboard Shortcut
+
+Listen to document:keydown with @HostListener
+
+Change text color (@HostBinding('style.color')) based on key pressed
+
+Vanshika, if you want, I can now create a full working mega assignment project combining:
+
+@HostListener → hover, scroll, keyboard
+
+@HostBinding → dynamic classes, styles, attributes
+
+ngClass/ngStyle → extra dynamic behavior
+
+ngFor/ngIf → display dynamic list
+
+This will teach you everything about reactive DOM binding in Angular.
+--------------------------------------------------------------------------------------------------
+Mega Assignment: Dynamic Dashboard Directive Project
+
+Goal:
+Create a student dashboard with the following features:
+
+Student list with hover effects
+
+Highlight selected student using @HostBinding
+
+Sticky header that changes background color when scrolling
+
+Keyboard shortcuts to trigger actions (like marking student as “favorite”)
+
+Dynamic styles and classes based on student marks
+
+Conditional display using *ngIf
+
+Step 1: Setup Angular Project
+ng new angular-dashboard
+cd angular-dashboard
+ng serve
+
+
+Generate directives:
+
+ng generate directive highlight
+ng generate directive sticky
+ng generate directive keyAction
+
+Step 2: Highlight Directive (Hover)
+highlight.directive.ts
+import { Directive, HostBinding, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appHighlight]'
+})
+export class HighlightDirective {
+  @HostBinding('style.backgroundColor') bgColor!: string;
+  @HostBinding('style.color') color!: string;
+
+  @HostListener('mouseenter') onEnter() {
+    this.bgColor = 'yellow';
+    this.color = 'black';
+  }
+
+  @HostListener('mouseleave') onLeave() {
+    this.bgColor = '';
+    this.color = '';
+  }
+}
+
+Usage
+<p appHighlight>Hover over me!</p>
+<button appHighlight>Hover Button</button>
+
+
+✅ Output: Highlights elements on hover
+
+Step 3: Sticky Header Directive
+sticky.directive.ts
+import { Directive, HostBinding, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appSticky]'
+})
+export class StickyDirective {
+  @HostBinding('class.sticky') isSticky = false;
+  @HostBinding('style.backgroundColor') bgColor!: string;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const offset = window.pageYOffset;
+    this.isSticky = offset > 50;
+    this.bgColor = this.isSticky ? 'lightblue' : 'transparent';
+  }
+}
+
+CSS
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  transition: 0.3s;
+  padding: 10px;
+  z-index: 1000;
+}
+
+HTML
+<header appSticky>
+  <h1>Student Dashboard</h1>
+</header>
+
+
+✅ Output: Sticky header with dynamic background color
+
+Step 4: Keyboard Shortcut Directive
+key-action.directive.ts
+import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
+
+@Directive({
+  selector: '[appKeyAction]'
+})
+export class KeyActionDirective {
+  @Output() enterPressed = new EventEmitter<void>();
+  @Output() escPressed = new EventEmitter<void>();
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if(event.key === 'Enter') {
+      this.enterPressed.emit();
+    }
+    if(event.key === 'Escape') {
+      this.escPressed.emit();
+    }
+  }
+}
+
+Usage
+<div appKeyAction 
+     (enterPressed)="markFavorite()" 
+     (escPressed)="clearSelection()">
+  Press Enter to mark favorite, Esc to clear selection
+</div>
+
+
+✅ Output: Keyboard events trigger TS functions
+
+Step 5: Dynamic Student List Component
+app.component.ts
+import { Component } from '@angular/core';
+
+interface Student {
+  name: string;
+  marks: number;
+  favorite: boolean;
+}
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  students: Student[] = [
+    { name: 'Vanshika', marks: 80, favorite: false },
+    { name: 'Atul', marks: 45, favorite: false },
+    { name: 'Ravi', marks: 60, favorite: false },
+    { name: 'Riya', marks: 30, favorite: false }
+  ];
+
+  selectedStudent: Student | null = null;
+
+  selectStudent(student: Student) {
+    this.selectedStudent = student;
+  }
+
+  markFavorite() {
+    if(this.selectedStudent) {
+      this.selectedStudent.favorite = !this.selectedStudent.favorite;
+    }
+  }
+
+  clearSelection() {
+    this.selectedStudent = null;
+  }
+}
+
+app.component.html
+<header appSticky>
+  <h1>Student Dashboard</h1>
+</header>
+
+<div appKeyAction 
+     (enterPressed)="markFavorite()" 
+     (escPressed)="clearSelection()"
+     style="margin-top:60px; padding:10px;">
+
+  <ul>
+    <li *ngFor="let student of students" 
+        appHighlight
+        (click)="selectStudent(student)"
+        [ngClass]="{'selected': student === selectedStudent, 'pass': student.marks>=50, 'fail': student.marks<50}"
+        [ngStyle]="{'font-weight': student.favorite ? 'bold' : 'normal'}">
+      {{ student.name }} - {{ student.marks }} 
+      <span *ngIf="student.favorite">★</span>
+    </li>
+  </ul>
+
+  <div *ngIf="selectedStudent">
+    Selected: {{ selectedStudent.name }}
+  </div>
+</div>
+
+app.component.css
+.pass { color: green; }
+.fail { color: red; }
+.selected { border: 1px solid blue; padding: 5px; }
+ul { list-style: none; padding: 0; }
+li { cursor: pointer; margin: 5px 0; padding: 5px; }
+
+✅ Assignment Features
+Feature	How Implemented
+Hover Highlight	@HostListener + @HostBinding in HighlightDirective
+Sticky Header	@HostListener('window:scroll') + @HostBinding('class.sticky')
+Keyboard Shortcuts	@HostListener('document:keydown') in KeyActionDirective
+Dynamic Style	[ngStyle] for font-weight and star icon for favorite
+Dynamic Classes	[ngClass] for pass/fail and selected student
+Conditional Display	*ngIf to show selected student
+
+This mega assignment covers almost all basic and advanced Angular features:
+
+Directives (HighlightDirective, StickyDirective, KeyActionDirective)
+
+HostBinding & HostListener
+
+Property and Event Binding
+
+ngClass & ngStyle
+
+ngFor & ngIf
+---------------------------------------------------------------------------------------------------
+What is Angular Routing?
+
+Angular routing allows you to navigate between different views (components) in a single-page application (SPA) without reloading the whole page.
+
+Key Concepts:
+
+Route: A path mapping to a component
+
+RouterModule: Angular module that provides routing functionality
+
+RouterOutlet: Placeholder in HTML where routed component will load
+
+RouterLink: Directive to navigate to a route
+
+ActivatedRoute: Service to access route parameters
+
+2️⃣ Setting Up Routes
+Step 1: Import RouterModule
+
+In app.module.ts:
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent }, // default route
+  { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: '**', redirectTo: 'home' } // wildcard route
+];
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    AboutComponent,
+    ContactComponent
+  ],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes) // configure routes
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+3️⃣ Using RouterOutlet
+
+<router-outlet> is a placeholder where Angular will render the component for the active route.
+
+<!-- app.component.html -->
+<nav>
+  <a routerLink="/home">Home</a> |
+  <a routerLink="/about">About</a> |
+  <a routerLink="/contact">Contact</a>
+</nav>
+
+<hr>
+<router-outlet></router-outlet>
+
+
+✅ Clicking links changes the view without full page reload.
+
+4️⃣ RouterLink and RouterLinkActive
+
+routerLink → Navigate to route
+
+routerLinkActive → Add CSS class when route is active
+
+<a routerLink="/home" routerLinkActive="active-link">Home</a>
+<a routerLink="/about" routerLinkActive="active-link">About</a>
+
+.active-link {
+  font-weight: bold;
+  color: blue;
+}
+
+5️⃣ Route Parameters
+
+You can pass dynamic values in URL:
+
+const routes: Routes = [
+  { path: 'student/:id', component: StudentComponent }
+];
+
+
+Access it in component:
+
+import { ActivatedRoute } from '@angular/router';
+
+constructor(private route: ActivatedRoute) {}
+
+ngOnInit() {
+  const id = this.route.snapshot.paramMap.get('id');
+  console.log(id);
+}
+
+
+URL example: /student/101 → id = 101
+
+6️⃣ Lazy Loading Modules
+
+Break app into feature modules and load on demand
+
+Good for performance optimization
+
+const routes: Routes = [
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+  }
+];
+
+
+AdminModule will load only when /admin is visited
+
+7️⃣ Guards (Optional Advanced)
+
+CanActivate → allow/prevent route access
+
+Example: login guard for admin pages
+
+{ path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }
+
+8️⃣ Assignment: Student Dashboard Routing
+
+Goal:
+Create a SPA with routes for Home, Students, About, Contact, and dynamic student details route.
+
+Step 1: Generate Components
+ng g c home
+ng g c about
+ng g c contact
+ng g c students
+ng g c student-detail
+
+Step 2: Set Up Routes (app.module.ts)
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+  { path: 'contact', component: ContactComponent },
+  { path: 'students', component: StudentsComponent },
+  { path: 'student/:id', component: StudentDetailComponent },
+  { path: '**', redirectTo: 'home' }
+];
+
+Step 3: Students Component (students.component.ts)
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+interface Student {
+  id: number;
+  name: string;
+}
+
+@Component({
+  selector: 'app-students',
+  templateUrl: './students.component.html'
+})
+export class StudentsComponent {
+  students: Student[] = [
+    { id: 101, name: 'Vanshika' },
+    { id: 102, name: 'Atul' },
+    { id: 103, name: 'Riya' }
+  ];
+
+  constructor(private router: Router) {}
+
+  viewDetails(student: Student) {
+    this.router.navigate(['/student', student.id]);
+  }
+}
+
+Step 4: Students Component HTML
+<h2>Students List</h2>
+<ul>
+  <li *ngFor="let student of students" (click)="viewDetails(student)">
+    {{student.name}}
+  </li>
+</ul>
+
+Step 5: Student Detail Component
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  selector: 'app-student-detail',
+  template: `<h3>Student Details for ID: {{id}}</h3>`
+})
+export class StudentDetailComponent implements OnInit {
+  id!: string | null;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id');
+  }
+}
+
+
+✅ Clicking a student navigates to /student/:id and shows ID
+
+Step 6: Navigation in AppComponent
+<nav>
+  <a routerLink="/home" routerLinkActive="active">Home</a> |
+  <a routerLink="/students" routerLinkActive="active">Students</a> |
+  <a routerLink="/about" routerLinkActive="active">About</a> |
+  <a routerLink="/contact" routerLinkActive="active">Contact</a>
+</nav>
+<hr>
+<router-outlet></router-outlet>
+
+Step 7: Bonus: Conditional Highlight Using Route
+<a routerLink="/students" [ngClass]="{'active': router.url === '/students'}">Students</a>
+
+✅ Features You Practiced
+
+Setting up basic routes
+
+Using RouterOutlet
+
+Navigating using routerLink & programmatically via Router
+
+Route parameters
+
+ngFor with click navigation
+
+Wildcard route for undefined paths
+
+Optional: Lazy loading for feature modules
+
+Vanshika, if you want, I can now make a full mega routing project with:
+
+Nested routes
+
+Lazy loaded modules
+
+Guards for protected routes
+
+Dynamic breadcrumbs
+
+It will be like a real-world multi-page

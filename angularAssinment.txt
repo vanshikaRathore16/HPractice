@@ -1,0 +1,768 @@
+Components Assignments with Answers
+Assignment 1:
+
+Create a UserCardComponent to display a user's name and email.
+
+Command:
+
+ng generate component user-card
+
+
+user-card.component.ts
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-user-card',
+  templateUrl: './user-card.component.html',
+  styleUrls: ['./user-card.component.css']
+})
+export class UserCardComponent {
+  name = 'Vanshika Rathore';
+  email = 'vanshika@example.com';
+}
+
+
+user-card.component.html
+
+<h2>{{ name }}</h2>
+<p>{{ email }}</p>
+
+
+✅ Explanation:
+You used String Interpolation to display data from TypeScript to HTML.
+
+Assignment 2:
+
+Make a ProductComponent that takes product name and price as inputs.
+
+Command:
+
+ng generate component product
+
+
+product.component.ts
+
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-product',
+  templateUrl: './product.component.html'
+})
+export class ProductComponent {
+  @Input() productName!: string;
+  @Input() price!: number;
+}
+
+
+product.component.html
+
+<div>
+  <h3>{{ productName }}</h3>
+  <p>Price: ₹{{ price }}</p>
+</div>
+
+
+app.component.html
+
+<app-product productName="Laptop" [price]="55000"></app-product>
+<app-product productName="Phone" [price]="20000"></app-product>
+
+
+✅ Explanation:
+You passed data from parent to child using @Input.
+
+Assignment 3:
+
+Create a parent component showing multiple student components.
+
+Command:
+
+ng generate component student
+
+
+student.component.ts
+
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-student',
+  template: `<p>{{ name }} - {{ course }}</p>`
+})
+export class StudentComponent {
+  @Input() name!: string;
+  @Input() course!: string;
+}
+
+
+app.component.html
+
+<h2>Student List</h2>
+<app-student name="Riya" course="Angular"></app-student>
+<app-student name="Aman" course="React"></app-student>
+<app-student name="Karan" course="Node.js"></app-student>
+
+
+✅ Explanation:
+You created reusable child components for displaying each student.
+
+Assignment 4:
+
+Create HeaderComponent and FooterComponent and include them in AppComponent.
+
+Commands:
+
+ng g c header
+ng g c footer
+
+
+header.component.html
+
+<header>
+  <h1>My Angular Website</h1>
+</header>
+
+
+footer.component.html
+
+<footer>
+  <p>© 2025 All rights reserved.</p>
+</footer>
+
+
+app.component.html
+
+<app-header></app-header>
+<router-outlet></router-outlet>
+<app-footer></app-footer>
+
+
+✅ Explanation:
+You used component composition — combining multiple components into one layout.
+
+Assignment 5:
+
+Create a ProfileComponent with a button to show/hide details.
+
+profile.component.ts
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-profile',
+  templateUrl: './profile.component.html'
+})
+export class ProfileComponent {
+  show = false;
+
+  toggleDetails() {
+    this.show = !this.show;
+  }
+}
+
+
+profile.component.html
+
+<button (click)="toggleDetails()">Toggle Profile</button>
+<div *ngIf="show">
+  <p>Name: Vanshika</p>
+  <p>City: Ujjain</p>
+</div>
+
+
+✅ Explanation:
+You used Event Binding and Structural Directive *ngIf to control visibility.
+
+Assignment 6:
+
+Make a TaskComponent that displays title and description using @Input.
+
+task.component.ts
+
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-task',
+  template: `<h4>{{ title }}</h4><p>{{ description }}</p>`
+})
+export class TaskComponent {
+  @Input() title!: string;
+  @Input() description!: string;
+}
+
+
+app.component.html
+
+<app-task title="Build Login Page" description="Create a login page using Angular."></app-task>
+<app-task title="Fix Bugs" description="Debug issues in product module."></app-task>
+
+
+✅ Explanation:
+Used @Input for one-way data flow from parent → child.
+
+Assignment 7:
+
+Parent to Child data passing example
+
+parent.component.html
+
+<app-child [message]="parentMsg"></app-child>
+
+
+parent.component.ts
+
+parentMsg = 'Hello from Parent!';
+
+
+child.component.ts
+
+@Input() message!: string;
+
+
+child.component.html
+
+<p>Message: {{ message }}</p>
+
+
+✅ Explanation:
+Shows property binding with @Input().
+
+Assignment 8:
+
+Child to Parent using EventEmitter
+
+child.component.ts
+
+import { Component, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  template: `<button (click)="sendMsg()">Send to Parent</button>`
+})
+export class ChildComponent {
+  @Output() messageEvent = new EventEmitter<string>();
+
+  sendMsg() {
+    this.messageEvent.emit('Hello Parent! From Child');
+  }
+}
+
+
+parent.component.html
+
+<app-child (messageEvent)="receiveMsg($event)"></app-child>
+<p>{{ childMsg }}</p>
+
+
+parent.component.ts
+
+childMsg = '';
+
+receiveMsg(msg: string) {
+  this.childMsg = msg;
+}
+
+
+✅ Explanation:
+Shows event binding and data emit from child → parent.
+
+Assignment 9:
+
+Build a CounterComponent (increase/decrease)
+
+counter.component.ts
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-counter',
+  templateUrl: './counter.component.html'
+})
+export class CounterComponent {
+  count = 0;
+
+  inc() { this.count++; }
+  dec() { this.count--; }
+}
+
+
+counter.component.html
+
+<h3>Count: {{ count }}</h3>
+<button (click)="inc()">+</button>
+<button (click)="dec()">-</button>
+
+
+✅ Explanation:
+Used event binding with (click) to modify state.
+
+Assignment 10:
+
+Reusable CardComponent using ng-content
+
+card.component.html
+
+<div class="card">
+  <ng-content></ng-content>
+</div>
+
+
+app.component.html
+
+<app-card>
+  <h2>Angular Learning</h2>
+  <p>Master Components and Binding</p>
+</app-card>
+
+
+✅ Explanation:
+ng-content lets you insert custom HTML inside reusable components.
+
+
+
+ANGULAR PRACTICE ASSIGNMENT SET WITH ANSWERS
+🧩 1️⃣ COMPONENTS (10 Assignments + Answers)
+1. Create UserCardComponent
+ng g c user-card
+
+name = 'Vanshika';
+email = 'vanshika@example.com';
+
+<h3>{{ name }}</h3>
+<p>{{ email }}</p>
+
+2. Create ProductComponent with @Input
+ng g c product
+
+@Input() productName!: string;
+@Input() price!: number;
+
+<p>{{ productName }} - ₹{{ price }}</p>
+
+<!-- app.component.html -->
+<app-product productName="Laptop" [price]="55000"></app-product>
+
+3. Parent showing multiple StudentComponents
+ng g c student
+
+@Input() name!: string;
+@Input() course!: string;
+
+<p>{{ name }} - {{ course }}</p>
+
+<app-student name="Aman" course="Angular"></app-student>
+<app-student name="Riya" course="Node"></app-student>
+
+4. Header and Footer Components
+ng g c header
+ng g c footer
+
+<!-- header.component.html -->
+<h1>My App Header</h1>
+
+<!-- footer.component.html -->
+<p>© 2025 InfoBeans Foundation</p>
+
+<app-header></app-header>
+<app-footer></app-footer>
+
+5. Profile toggle using button
+show = false;
+toggle() { this.show = !this.show; }
+
+<button (click)="toggle()">Show/Hide</button>
+<div *ngIf="show">
+  <p>Name: Vanshika</p>
+</div>
+
+6. TaskComponent with title and description
+@Input() title!: string;
+@Input() desc!: string;
+
+<h4>{{ title }}</h4>
+<p>{{ desc }}</p>
+
+7. Parent → Child data passing
+// parent.html
+<app-child [message]="msg"></app-child>
+
+// parent.ts
+msg = 'Hello from parent!';
+
+// child.ts
+@Input() message!: string;
+
+<p>{{ message }}</p>
+
+8. Child → Parent using EventEmitter
+// child.ts
+@Output() send = new EventEmitter<string>();
+emitData() { this.send.emit('Hello Parent!'); }
+
+<button (click)="emitData()">Send</button>
+
+<!-- parent.html -->
+<app-child (send)="receive($event)"></app-child>
+<p>{{ data }}</p>
+
+// parent.ts
+data!: string;
+receive(d: string) { this.data = d; }
+
+9. Counter component
+count = 0;
+inc(){this.count++;}
+dec(){this.count--;}
+
+<p>Count: {{ count }}</p>
+<button (click)="inc()">+</button>
+<button (click)="dec()">-</button>
+
+10. CardComponent with ng-content
+<div class="card">
+  <ng-content></ng-content>
+</div>
+
+<app-card>
+  <h3>Reusable Card</h3>
+  <p>Angular makes it easy!</p>
+</app-card>
+
+🔗 2️⃣ DATA BINDING (10 Assignments + Answers)
+1. Show name
+name = 'Vanshika';
+
+<h2>{{ name }}</h2>
+
+2. Two-way binding
+username = '';
+
+<input [(ngModel)]="username">
+<p>{{ username }}</p>
+
+3. Show live input
+text = '';
+
+<input [(ngModel)]="text">
+<p>You typed: {{ text }}</p>
+
+4. Disable button conditionally
+isDisabled = true;
+
+<button [disabled]="isDisabled">Click</button>
+
+5. Dynamic image
+imgUrl = 'https://angular.io/assets/images/logos/angular/angular.png';
+
+<img [src]="imgUrl" width="100">
+
+6. Dynamic class
+active = true;
+
+<p [class.text-danger]="active">Status</p>
+
+7. Bind multiple properties
+titleText = 'Tooltip here';
+color = 'purple';
+
+<p [title]="titleText" [style.color]="color">Hover me</p>
+
+8. Two fields form
+user = {name:'',email:''};
+
+<input [(ngModel)]="user.name">
+<input [(ngModel)]="user.email">
+<p>{{ user.name }} - {{ user.email }}</p>
+
+9. Toggle ON/OFF
+state = true;
+
+<button (click)="state = !state">Toggle</button>
+<p>{{ state ? 'ON' : 'OFF' }}</p>
+
+10. Celsius to Fahrenheit
+c!: number;
+f!: number;
+convert(){this.f=(this.c*9/5)+32;}
+
+<input [(ngModel)]="c" placeholder="Celsius">
+<button (click)="convert()">Convert</button>
+<p>{{ f }} °F</p>
+
+💬 3️⃣ STRING INTERPOLATION (10 Assignments + Answers)
+1.
+name='Vanshika';
+
+<h2>{{ name }}</h2>
+
+2.
+today=new Date();
+
+<p>{{ today }}</p>
+
+3.
+user={name:'Vanshika',age:22,city:'Ujjain'};
+
+<p>{{ user.name }} - {{ user.age }} - {{ user.city }}</p>
+
+4.
+<p>{{ 10 + 5 }}</p>
+
+5.
+getMsg(){return 'Welcome to Angular';}
+
+<p>{{ getMsg() }}</p>
+
+6.
+product={name:'Phone',price:20000};
+
+<p>{{ product.name }} ₹{{ product.price }}</p>
+
+7.
+fname='Vanshika'; lname='Rathore';
+
+<p>{{ fname }} {{ lname }}</p>
+
+8.
+isLogged=true;
+
+<p>{{ isLogged ? 'Welcome!' : 'Login first' }}</p>
+
+9.
+arr=['A','B','C'];
+
+<p>Length: {{ arr.length }}</p>
+
+10.
+book='Atomic Habits'; author='James Clear';
+
+<p>{{ book }} by {{ author }}</p>
+
+⚙️ 4️⃣ PROPERTY BINDING (10 Assignments + Answers)
+1.
+disabled=true;
+
+<button [disabled]="disabled">Save</button>
+
+2.
+img='https://angular.io/assets/images/logos/angular/angular.png';
+
+<img [src]="img" width="100">
+
+3.
+val='Vanshika';
+
+<input [value]="val">
+
+4.
+color='red';
+
+<p [style.color]="color">Color Text</p>
+
+5.
+text='Dynamic Text';
+
+<p [innerText]="text"></p>
+
+6.
+active=true;
+
+<p [class.active]="active">Active User</p>
+
+7.
+span=3;
+
+<td [attr.colspan]="span">Merged</td>
+
+8.
+tip='Hover tip';
+
+<p [title]="tip">Hover me</p>
+
+9.
+hide=true;
+
+<p [hidden]="hide">Hidden text</p>
+
+10.
+width='70%';
+
+<div [style.width]="width" style="background:lightblue;">Progress</div>
+
+🎯 5️⃣ EVENT BINDING (10 Assignments + Answers)
+1.
+<button (click)="alert('Hello!')">Click</button>
+
+2.
+msg='Hello';
+change(){this.msg='Changed';}
+
+<p>{{ msg }}</p>
+<button (click)="change()">Change</button>
+
+3.
+val='';
+
+<input (keyup)="val=$event.target.value">
+<p>{{ val }}</p>
+
+4.
+show=true;
+
+<button (click)="show=!show">Toggle</button>
+<p *ngIf="show">Visible</p>
+
+5.
+count=0;
+
+<button (click)="count++">Click</button>
+<p>{{ count }}</p>
+
+6.
+<p (mouseover)="alert('Mouse entered!')">Hover here</p>
+
+7.
+typing='';
+
+<input (keydown)="typing='Typing...'" (keyup)="typing=''">
+<p>{{ typing }}</p>
+
+8.
+email='';
+
+<form (submit)="alert(email)">
+  <input [(ngModel)]="email" name="email">
+  <button type="submit">Submit</button>
+</form>
+
+9.
+<p (dblclick)="alert('Double Clicked!')">Double Click Me</p>
+
+10.
+num=0;
+inc(){this.num++;}
+dec(){this.num--;}
+
+<p>{{ num }}</p>
+<button (click)="inc()">+</button>
+<button (click)="dec()">-</button>
+
+⚡ 6️⃣ CREATING NEW APP, COMPONENT, MODULE, SERVICE (10 Assignments + Answers)
+1.
+ng new my-angular-app
+
+2.
+ng g c home
+
+3.
+ng g c about
+
+4.
+ng g s user
+
+
+user.service.ts
+
+getName(){ return 'Vanshika'; }
+
+5.
+ng g m user
+
+6.
+
+Use service in component
+
+constructor(private userService:UserService){}
+name=this.userService.getName();
+
+<p>{{ name }}</p>
+
+7.
+
+Module example
+
+ng g m admin
+ng g c admin/dashboard
+
+8.
+
+Generate shared service
+
+ng g s shared
+
+9.
+
+Lazy-load a module
+
+ng g m products --route products --module app
+
+10.
+
+Build & serve
+
+ng build
+ng serve
+
+🔁 7️⃣ PASSING & USING DATA WITH EVENT BINDING (10 Assignments + Answers)
+1. Parent to Child using @Input
+<app-child [info]="data"></app-child>
+
+data='Message from Parent';
+
+@Input() info!: string;
+
+<p>{{ info }}</p>
+
+2. Child to Parent using @Output
+@Output() send = new EventEmitter<string>();
+emitData(){this.send.emit('From Child');}
+
+<button (click)="emitData()">Send</button>
+
+<app-child (send)="msg=$event"></app-child>
+<p>{{ msg }}</p>
+
+3. Pass input data via event
+<input #val>
+<button (click)="show(val.value)">Send</button>
+<p>{{ message }}</p>
+
+message='';
+show(v:string){this.message=v;}
+
+4. Use EventEmitter in service
+// shared.service.ts
+@Output() notify = new EventEmitter<string>();
+
+// component
+this.shared.notify.emit('New Data!');
+
+5. Send object data
+@Output() sendData = new EventEmitter<any>();
+
+<button (click)="sendData.emit({id:1,name:'Vanshika'})">Send</button>
+
+6. Capture event parameter
+<button (click)="getValue('Angular')">Click</button>
+<p>{{ course }}</p>
+
+course='';
+getValue(c:string){this.course=c;}
+
+7. Emit on button click and update UI
+@Output() changed = new EventEmitter<string>();
+onClick(){this.changed.emit('Button Clicked!');}
+
+8. Pass numeric data through event
+<button (click)="add(5)">Add</button>
+<p>{{ total }}</p>
+
+total=0;
+add(n:number){this.total+=n;}
+
+9. Event binding with input event
+<input (input)="update($event)">
+<p>{{ val }}</p>
+
+val='';
+update(e:any){this.val=e.target.value;}
